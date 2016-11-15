@@ -49,7 +49,7 @@ def db_setup():
 		cur.execute('CREATE TABLE children(ID INTEGER PRIMARY KEY, First_Name TEXT, Last_Name TEXT, Birthday TEXT)')
 		cur.execute('CREATE TABLE rates(ID INTEGER PRIMARY KEY, rate_name TEXT)')
 		cur.execute('CREATE TABLE rate_mapping(rate_map_ID INTEGER PRIMARY KEY, rate_id INTEGER, caretaker_id INTEGER, rate_amt FLOAT, FOREIGN KEY(rate_id) REFERENCES ID(rate), FOREIGN KEY(caretaker_id) REFERENCES ID(caretaker))')
-		cur.execute('CREATE TABLE day_entry(entry_ID INTEGER PRIMARY KEY, date DATE, rate_map_ID INTEGER, hours FLOAT, misc_expense_amt FLOAT, misc_expense_note TEXT, entry_total FLOAT, week_close_ID INTEGER, FOREIGN KEY(week_close_ID) REFERENCES close_ID(week_close), FOREIGN KEY(rate_map_id) REFERENCES rate_map_id(rate_mapping))')
+		cur.execute('CREATE TABLE day_entry(entry_ID INTEGER PRIMARY KEY, date DATE, rate_map_ID INTEGER, hours FLOAT, misc_expense_amt FLOAT, misc_expense_note TEXT, entry_total FLOAT, FOREIGN KEY(week_close_ID) REFERENCES close_ID(week_close), FOREIGN KEY(rate_map_id) REFERENCES rate_map_id(rate_mapping))')
 		#cur.execute('CREATE TABLE week_close(close_ID INTEGER PRIMARY KEY, close_date DATE, date_start DATE, date_end DATE, close_total FLOAT, payment_ID INTEGER, FOREIGN KEY(payment_ID) REFERENCES payment_ID(payment))')
 		cur.execute('CREATE TABLE day_entry_child_mapping(ID INTEGER PRIMARY KEY, day_entry_id INTEGER, child_ID INTEGER, FOREIGN KEY(child_id) REFERENCES ID(children), FOREIGN KEY(day_entry_id) REFERENCES entry_ID(day_entry))')
 		#cur.execute('CREATE TABLE payment(payment_ID INTEGER PRIMARY KEY, type TEXT, week_close_id INTEGER, payment_amount FLOAT, balance FLOAT, FOREIGN KEY(week_close_id) REFERENCES close_id(week_close))')

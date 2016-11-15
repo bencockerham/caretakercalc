@@ -415,11 +415,14 @@ class Caretaker(object):
 					try:
 						update_data = []
 						rate_amt = float(raw_input('please enter rate '))
-						rate_dict[rate_data[rate][0]] = rate_amt
-						update_data = [rate_id, choice, rate_amt]
-						cur.execute('INSERT INTO rate_mapping(rate_id, caretaker_id, rate_amt) VALUES(?, ?, ?)', update_data)
-						con.commit()
-						rating = False
+						if rate_amt <0:
+							print 'please enter a numeric value greater than zero'
+						else:
+							rate_dict[rate_data[rate][0]] = rate_amt
+							update_data = [rate_id, choice, rate_amt]
+							cur.execute('INSERT INTO rate_mapping(rate_id, caretaker_id, rate_amt) VALUES(?, ?, ?)', update_data)
+							con.commit()
+							rating = False
 					except ValueError:
 						print 'please only enter a numeric value'
 		print 'caretaker add completed'
@@ -706,6 +709,9 @@ class AdvOpt(object):
 		self.pref_dict = {}
 		self.bulk_update_data = {}
 		
+	def back(self):
+		pass
+		
 	def menu(self):
 		self.check_pref_enabled()
 		self.menu_dict = {
@@ -713,7 +719,7 @@ class AdvOpt(object):
 			2: ['bulk update', self.bulk_update],
 			3: ['export data', self.export_data],
 			4: ['quick populate testing data', self.testing_data],
-			5: ['return to the main menu', processing.backmenu]
+			5: ['return to the main menu', self.back]
 			}
 		flow.clear()
 		flow.header()
@@ -723,13 +729,9 @@ class AdvOpt(object):
 		while choosing:
 			try:
 				choice = int(raw_input('? '))
-				if choice in self.menu_dict:
-					if choice == 5:
-						choosing = False
-						return 'X' 
-					else: 
-						self.menu_dict[choice][1]()
-						choosing = False
+				if choice in self.menu_dict:	
+					self.menu_dict[choice][1]()
+					choosing = False
 				else:
 					print 'choice not in menu'
 			except ValueError:
@@ -886,7 +888,7 @@ class AdvOpt(object):
 			choosing = True
 			while choosing:
 				flow.clear()
-				print 'please enter the first 3 letters of the day you want to edit'
+				print 'please enter the first 3 letters of the day you want to edit preferences for'
 				print 'or press M to return to the main menu'
 				day = raw_input('? ')
 				short_day = day[0:3]
@@ -1019,17 +1021,17 @@ class AdvOpt(object):
 						pass
 					else:
 						child_pref_list.append(choice)
-						adding = True
-						while adding:
-							print 'do you want to add another child to the update preferences list?'
-							add = raw_input('Y/N ')
-							if add.upper() == 'Y':
-								adding = False
-							elif add.upper() == 'N':
-								adding = False
-								choosing = False
-							else:
-								print 'please only enter Y or N'
+					adding = True
+					while adding:
+						print 'do you want to add another child to the update preferences list?'
+						add = raw_input('Y/N ')
+						if add.upper() == 'Y':
+							adding = False
+						elif add.upper() == 'N':
+							adding = False
+							choosing = False
+						else:
+							print 'please only enter Y or N'
 				else:
 					print 'please only enter a child ID from the list or 0 to exit'
 			except ValueError:
@@ -1391,7 +1393,7 @@ class AdvOpt(object):
 			1: ['export all day data', self.export_days],
 			2: ['export all child data', self.export_children],
 			3: ['export all caretaker and rate data', self.export_caretaker],
-			4: ['return to the main menu', self.backmenu]
+			4: ['return to the main menu', self.back]
 			}
 		flow.clear()
 		for option in export_dict:
@@ -1891,7 +1893,10 @@ class Processing(object):
 				return
 			elif int(new_child) in children.child_dict:
 				child_id = int(new_child)
-				add_child_list.append(child_id) 
+				if child_id in add_child_list:
+					pass
+				else:
+					add_child_list.append(child_id) 
 				print 'add another child?'
 				another = True
 				keep_going = raw_input('Y/N ')
@@ -2129,7 +2134,6 @@ class Reporting(object):
 		choosing = True
 		while choosing:
 			print 'please enter the number of your choice'
-			print 'or type ''m'' for the main menu or ''x'' to exit'
 			try:
 				choice = int(raw_input('? '))
 				if choice in reporting_menu:
