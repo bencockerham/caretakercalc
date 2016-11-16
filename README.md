@@ -1,6 +1,7 @@
-#Caretaker Calc README — by bencockerham — November 14, 2016
+###Caretaker Calc README — by bencockerham — November 14, 2016
 
-#Overview: this is a command line program written in Python 2.7 and using a SQLite3 database to track and manage hours worked for a child's caretaker. The program allows you to:
+#Overview 
+This is a command line program written in Python 2.7 and using a SQLite3 database to track and manage hours worked for a child's caretaker. The program allows you to:
 
 -add and manage multiple caretakers' information including contact information and rates
 
